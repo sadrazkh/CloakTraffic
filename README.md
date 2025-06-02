@@ -1,69 +1,101 @@
-# CloakTraffic - Proxy Setup Script for Regional IP Masking
+# CloakTraffic
 
-This script is designed to prepare a Linux server (Debian/Ubuntu) with NGINX, automatic SSL, and basic HTML content to act as a proxy or frontend server. It supports use cases like routing Iranian traffic through a German proxy to bypass IP-based geo-detection (e.g., for Google Analytics).
+## Overview
 
-## 🔧 Features
-- Automatic NGINX + Let's Encrypt SSL setup
-- Domain prompt on install
-- Minimal HTML index page for testing
-- UFW firewall auto-config
-- English-only clean output
+**CloakTraffic** is a dual-server proxy system that routes visitors from Iranian IP addresses through a proxy server located in Germany before reaching your main server in Canada.  
+This setup hides the Iranian origin IPs from Google Analytics, making the traffic appear as if it originates from Germany.
 
-## 📦 Usage
-Clone the repo and run the setup script on both your proxy (Germany) and main (Canada) servers:
+---
+
+## Prerequisites
+
+- Two VPS servers:
+  - **Main Server (Canada)** – hosts your website
+  - **Proxy Server (Germany)** – proxies Iranian visitors
+- Domains for each server (e.g., `example.com` for Main Server, `proxy.example.com` for Proxy Server)
+- Cloudflare account for DNS and CDN management
+
+---
+
+## Installation
+
+### Step 1: Install on Main Server (Canada)
+
+Run this command on your main server:
 
 ```bash
-git clone https://github.com/sadrazkh/CloakTraffic.git
-cd geo-shield
-chmod +x install.sh
-sudo ./install.sh
+bash <(curl -s https://raw.githubusercontent.com/sadrazkh/CloakTraffic/main/install-main.sh)
 ```
 
-You'll be asked to enter the domain name for this server during setup (e.g., `proxy.yoursite.com` or `main.yoursite.com`).
+You will be asked to enter your main domain name (e.g., `example.com`).
+
+This script installs and configures:
+
+- NGINX with SSL (Let's Encrypt)
+- Basic firewall rules
+- Site setup
 
 ---
 
-## 🚀 One-line Installation
+### Step 2: Install on Proxy Server (Germany)
 
-To install everything with a single command, run this in your terminal:
+Run this command on your proxy server:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/sadrazkh/CloakTraffic/main/install-all.sh)
-```
----
-## ☁️ Cloudflare Configuration (Optional but Recommended)
-
-### ✅ Enable Cloudflare Proxy
-1. Make sure both your domains (`proxy.yoursite.com`, `main.yoursite.com`) are added to your Cloudflare account.
-2. Set DNS records for both domains to point to their respective IPs (Germany and Canada).
-3. Enable the orange cloud icon to activate Cloudflare Proxy for both.
-
-### ⚙️ Recommended Settings
-- **SSL/TLS**: Set to **Full**
-- **Caching**: Set to **Standard** (optional)
-- **Bot Fight Mode**: Optional (can block internal curl requests)
-- **Page Rules (optional)**:
-    - Cache everything if you want to improve performance
-    - Disable security for `.well-known/acme-challenge` if Let's Encrypt fails
-
----
-
-## 📡 Advanced: Proxying Iranian Traffic via Cloudflare Workers (Upcoming)
-You can deploy a Cloudflare Worker to forward traffic based on IP geolocation (Iran) through your German proxy. This will hide the user's original IP from analytics tools.
-
-Coming soon in the next version of this repo.
-
----
-
-## 📁 File Structure
-```
-.
-├── install.sh          # Main setup script for server configuration
-├── README.md           # This file
+bash <(curl -s https://raw.githubusercontent.com/sadrazkh/CloakTraffic/main/install-proxy.sh)
 ```
 
+You will be asked to enter your proxy domain name (e.g., `proxy.example.com`).
+
+This script installs and configures:
+
+- NGINX with SSL (Let's Encrypt)
+- GeoIP2 for IP-based country detection
+- Firewall rules
+- Proxy configuration to forward Iranian IP traffic to the main server
+
 ---
 
-## ✍️ Author
-**Your Name** — [@yourhandle](https://github.com/sadrazkh)
+## DNS Configuration (Cloudflare)
 
+1. In Cloudflare DNS settings:
+   - Point your main domain (e.g., `example.com`) A record to the **Proxy Server's IP (Germany)**.
+   - Point your proxy domain (e.g., `proxy.example.com`) A record to the **Proxy Server's IP** as well.
+2. Make sure the **Proxy status (orange cloud)** is enabled for both DNS records.
+3. This way, all traffic (including Iranian visitors) goes to the proxy server first.
+
+---
+
+## How It Works
+
+- Visitors from all countries access your main domain.
+- Iranian visitors are detected by the proxy server using GeoIP2 and their requests are proxied to the main server.
+- Non-Iranian visitors can be served directly or also routed through the proxy depending on your config.
+- Google Analytics sees the proxy server’s IP (Germany) for Iranian users, hiding their real Iranian IPs.
+
+---
+
+## Testing
+
+- Use VPN or proxy services to simulate access from Iran and other countries.
+- Check your Google Analytics to confirm Iranian visits show German IPs.
+- Use online IP checker tools from the proxy server to verify IP forwarding.
+
+---
+
+## Quick Commands Summary
+
+| Server       | Command                                                                 |
+|--------------|-------------------------------------------------------------------------|
+| Main Server  | `bash <(curl -s https://raw.githubusercontent.com/sadrazkh/CloakTraffic/main/install-main.sh)` |
+| Proxy Server | `bash <(curl -s https://raw.githubusercontent.com/sadrazkh/CloakTraffic/main/install-proxy.sh)` |
+
+---
+
+## Support & Contributions
+
+Feel free to open issues or contribute to this repository.
+
+---
+
+Thank you for using **CloakTraffic**!
