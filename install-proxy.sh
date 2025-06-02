@@ -10,6 +10,21 @@ read PROXY_DOMAIN
 
 echo "Configuring firewall..."
 ufw allow 'Nginx Full'
+echo "Configuring basic firewall rules..."
+
+ufw allow 22
+ufw allow 80
+ufw allow 443
+
+read -p "Do you want to open any additional ports? (comma-separated, or leave blank): " extra_ports
+if [ ! -z "$extra_ports" ]; then
+  IFS=',' read -ra PORTS <<< "$extra_ports"
+  for port in "${PORTS[@]}"; do
+    ufw allow "$port"
+  done
+fi
+
+ufw enable
 ufw --force enable
 
 # Download GeoLite2-Country.mmdb if not exists
