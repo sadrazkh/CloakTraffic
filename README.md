@@ -23,6 +23,14 @@ You'll be asked to enter the domain name for this server during setup (e.g., `pr
 
 ---
 
+## 🚀 One-line Installation
+
+To install everything with a single command, run this in your terminal:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/yourusername/geo-shield/main/install-all.sh)
+```
+---
 ## ☁️ Cloudflare Configuration (Optional but Recommended)
 
 ### ✅ Enable Cloudflare Proxy
