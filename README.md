@@ -13,7 +13,7 @@ This script is designed to prepare a Linux server (Debian/Ubuntu) with NGINX, au
 Clone the repo and run the setup script on both your proxy (Germany) and main (Canada) servers:
 
 ```bash
-git clone https://github.com/yourusername/geo-shield.git
+git clone https://github.com/sadrazkh/CloakTraffic.git
 cd geo-shield
 chmod +x install.sh
 sudo ./install.sh
@@ -28,7 +28,7 @@ You'll be asked to enter the domain name for this server during setup (e.g., `pr
 To install everything with a single command, run this in your terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/yourusername/geo-shield/main/install-all.sh)
+bash <(curl -s https://raw.githubusercontent.com/sadrazkh/CloakTraffic/main/install-all.sh)
 ```
 ---
 ## ☁️ Cloudflare Configuration (Optional but Recommended)
