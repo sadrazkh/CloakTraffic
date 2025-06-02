@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-REPO_URL="https://github.com/yourusername/geo-shield.git"
-INSTALL_DIR="$HOME/geo-shield"
+REPO_URL="https://github.com/sadrazkh/CloakTraffic.git"
+INSTALL_DIR="$HOME/CloakTraffic"
 
 echo "🚀 Cloning repo..."
 if [ -d "$INSTALL_DIR" ]; then
