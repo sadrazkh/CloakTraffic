@@ -57,9 +57,5 @@ Coming soon in the next version of this repo.
 ---
 
 ## ✍️ Author
-**Your Name** — [@yourhandle](https://github.com/yourhandle)
+**Your Name** — [@yourhandle](https://github.com/sadrazkh)
 
----
-
-## 📄 License
-MIT License
